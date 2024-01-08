@@ -9,3 +9,27 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Company {
+  id           String    @id @default(uuid())
+  name         String    @db.VarChar
+  email        String    @db.VarChar
+  direction    String    @db.VarChar
+  numberPhone String    @db.VarChar
+  createdAt   DateTime? @default(dbgenerated("'2023-09-19 18:08:29.69745'::timestamp without time zone")) @db.Timestamp(6)
+  updatedAt   DateTime? @default(dbgenerated("'2023-09-19 18:08:29.69745'::timestamp without time zone")) @db.Timestamp(6)
+  clients      Client[]
+}
+
+model Client {
+  id         String    @id @default(uuid())
+  name       String    @db.VarChar
+  lastname   String    @db.VarChar
+  email      String    @db.VarChar
+  createdAt DateTime? @default(dbgenerated("'2023-09-19 18:08:29.69745'::timestamp without time zone")) @db.Timestamp(6)
+  updatedAt DateTime? @default(dbgenerated("'2023-09-19 18:08:29.69745'::timestamp without time zone")) @db.Timestamp(6)
+
+  companyId String
+  //nombre   modelo     tipo de relacion
+  company   Company @relation(fields: [companyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
